@@ -23,7 +23,7 @@ MLX = $(MLX_PATH)/libmlx.a
 
 all: $(NAME)
 
-$(NAME): $(OBJ_FILES) $(LIBFT) $(MLX)
+$(NAME):  $(LIBFT) $(MLX) $(OBJ_FILES)
 	@$(CC) $(CFLAGS) -o $@ $^ -L$(LIBFT_PATH) -lft -L$(MLX_PATH) -lmlx -framework OpenGL -framework AppKit
 	@echo "$(NAME): $(GREEN)object files were created$(RESET)"
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"

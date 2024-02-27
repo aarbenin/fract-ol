@@ -30,30 +30,14 @@
 
 typedef int (*t_func)(int, int);
 
+
 typedef enum e_fractal_type
 {
     MANDELBROT,
     JULIA,
     
 } t_fractal_type;
-/*
-typedef struct s_fractal_bounds 
-{
-    double max_r;
-    double min_r;
-    double max_i;
-    double min_i;
-} t_fractal_bounds;
 
-typedef struct s_img 
-{
-    void *img;
-    char *addr;
-    int bits_per_pixel;
-    int line_length;
-    int endian;
-}               t_img;
-*/
 typedef struct s_fractal 
 {
     t_fractal_type type;
@@ -65,7 +49,7 @@ typedef struct s_fractal
     int    line_length;
     int    endian;
     int    color;
-    int     max_iterations;
+    int    max_iterations;
     double zoom;
     double offset_x;
     double offset_y;
@@ -73,20 +57,21 @@ typedef struct s_fractal
     double min_r;
     double max_i;
     double min_i;
-    // Жюлиа
-    double julia_real;
-    double julia_imag;
-    
- 
-    
+
+    double  julia_real;
+    double  julia_imag;
+
+    int (*color_func)(int, int);
+   
 }   t_fractal;
 
 
 
-#include "mlx.h"
-#include <math.h>
-#include <stdio.h>
-#include <stdlib.h>
+# include "mlx.h"
+# include <math.h>
+# include <stdio.h>
+# include <stdlib.h>
+# include "libft.h"
 
 
 int	get_unicorn_color(int iterations, int max_iterations);

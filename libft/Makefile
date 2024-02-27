@@ -51,6 +51,7 @@ OBJS = $(SRCS:.c=.o)
 
 all: $(NAME)
 
+
 $(NAME): $(OBJS)
 	@ar rcs $(NAME) $^
 

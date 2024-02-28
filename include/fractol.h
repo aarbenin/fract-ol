@@ -27,14 +27,18 @@
 // event codes
 # define EVENT_CLOSE_BTN 17
 
+typedef struct s_fractal t_fractal;
 
 typedef int (*t_func)(int, int);
+typedef int (*t_fractal_func)(double x, double y, t_fractal *fract);
+
 
 
 typedef enum e_fractal_type
 {
     MANDELBROT,
     JULIA,
+    BURNING_SHIP
     
 } t_fractal_type;
 
@@ -62,6 +66,8 @@ typedef struct s_fractal
     double  julia_imag;
 
     int (*color_func)(int, int);
+    int (*fractal_func)(double x, double y, t_fractal *fract);
+
    
 }   t_fractal;
 
@@ -78,6 +84,7 @@ int	get_unicorn_color(int iterations, int max_iterations);
 int	get_cosmic_color(int iterations, int max_iterations);
 int get_dark_color(int iterations, int max_iterations);
 int get_zebra_color(int iterations, int max_iterations);
+int get_fire_color(int iterations, int max_iterations);
 
 
 

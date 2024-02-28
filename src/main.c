@@ -70,6 +70,27 @@ int	julia_set(double x, double y, t_fractal *fract)
 	return (n);
 }
 
+int burning_ship_set(double x, double y, t_fractal *fract)
+{
+    double zx;
+    double zy;
+    double tmp;
+    int n;
+
+	zx = 0;
+	zy = 0;
+	n = 0;
+    while (zx * zx + zy * zy < 4 && n < fract->max_iterations)
+    {
+        tmp = zx * zx - zy * zy + x;
+        zy = fabs(2 * zx * zy) + y;
+        zx = tmp;
+        n++;
+    }
+    return n;
+}
+
+
 void	set_pixel(t_fractal *fract, int x, int y, int color)
 {
 	int	pixel_pos;
@@ -95,7 +116,7 @@ void	draw_fractal(t_fractal *fract, t_func color_func)
  			x = ((double)px / WIDTH) * (fract->max_r - fract->min_r) + fract->min_r + fract->offset_x;
             y = ((double)py / HEIGHT) * (fract->max_i - fract->min_i) + fract->min_i + fract->offset_y;
 
-			iterations = julia_set(x, y, fract);
+			iterations = fract->fractal_func(x, y, fract);
 			fract->color = color_func(iterations, fract->max_iterations);
 			set_pixel(fract, px, py, fract->color);
 			py++;
@@ -117,6 +138,7 @@ void	init_mandelbrot(t_fractal *fractal)
 	fractal->offset_y = 0.0;
 	fractal->max_iterations = 60;
 	fractal->color_func = &get_unicorn_color;
+	fractal->fractal_func = &mandelbrot_set;
 	
 }
 void	init_julia(t_fractal *fractal)
@@ -133,8 +155,25 @@ void	init_julia(t_fractal *fractal)
 	fractal->offset_y = 0.0;
 	fractal->max_iterations = 500;
 	fractal->color_func = &get_cosmic_color;
+	fractal->fractal_func = &julia_set;
 
 }
+void init_burning_ship(t_fractal *fractal)
+{
+    fractal->type = BURNING_SHIP;
+    fractal->min_r = -2.2; 
+    fractal->max_r = -1.7;
+    fractal->min_i = -0.1;
+    fractal->max_i = 0.1;
+    fractal->zoom = 1.0;
+    fractal->offset_x = 0.0;
+    fractal->offset_y = 0.0;
+    fractal->max_iterations = 100; 
+	fractal->color_func = &get_fire_color;
+    fractal->fractal_func = &burning_ship_set;
+}
+
+
 int	close_window(void *params)
 {
 	(void)params;
@@ -205,10 +244,26 @@ int handle_keypress(int keycode, t_fractal *fractal)
     {
         fractal->offset_y += shift_amount;
     }
+	else if (keycode == KEY_W)
+	{
+		fractal->julia_imag += 0.05;
+	}
+	else if (keycode == KEY_S)
+	{
+		fractal->julia_imag -= 0.05;
+	}
+	else if (keycode == KEY_A)
+	{
+		fractal->julia_real -= 0.05;
+	}
+	else if (keycode == KEY_D)
+	{
+		fractal->julia_real += 0.05;
+	}
 
 
 	mlx_clear_window(fractal->mlx, fractal->win);
-	draw_fractal(fractal, get_unicorn_color);
+	draw_fractal(fractal, fractal->color_func);
 	mlx_put_image_to_window(fractal->mlx, fractal->win, fractal->img, 0, 0);
     return (0);
 }
@@ -253,6 +308,10 @@ int	main(int argc, char **argv)
 	else if (strcmp(argv[1], "julia") == 0)
 	{
 		init_julia(&fractal);
+	}
+	else if (strcmp(argv[1], "burning_ship") == 0)
+	{
+		init_burning_ship(&fractal);
 	}
 	else
 	{

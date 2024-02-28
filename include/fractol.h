@@ -1,8 +1,8 @@
 #ifndef FRACTOL_H
 #define FRACTOL_H
 
-#define HEIGHT 1200
-#define WIDTH 1200
+#define HEIGHT 900
+#define WIDTH 900
 #define MAX_ITERATIONS 60
 
 // Key codes
@@ -11,10 +11,11 @@
 # define KEY_DOWN 125
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
-# define KEY_W 119
-# define KEY_A 97
-# define KEY_S 115
-# define KEY_D 100
+# define KEY_W 13
+# define KEY_A 0
+# define KEY_S 1
+# define KEY_D 2
+# define KEY_SPACE 49
 
 // Mouse codes
 # define SCROLL_UP 4
@@ -29,7 +30,7 @@
 
 typedef struct s_fractal t_fractal;
 
-typedef int (*t_func)(int, int);
+typedef int (*t_color_func)(int, int);
 typedef int (*t_fractal_func)(double x, double y, t_fractal *fract);
 
 
@@ -53,7 +54,8 @@ typedef struct s_fractal
     int    line_length;
     int    endian;
     int    color;
-    int    max_iterations;
+    int     max_iterations;
+    int     current_scheme;
     double zoom;
     double offset_x;
     double offset_y;

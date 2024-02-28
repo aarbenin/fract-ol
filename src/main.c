@@ -2,6 +2,7 @@
 #include <string.h>
 
 
+
 int	mandelbrot_set(double x, double y, t_fractal *fract)
 {
 	double	zx;
@@ -25,30 +26,6 @@ int	mandelbrot_set(double x, double y, t_fractal *fract)
 	}
 	return (n);
 }
-
-
-/*
-int	mandelbrot_set(double x, double y, int max_iterations)
-{
-    double zx = 0;
-    double zy = 0;
-    double qx = (x - 0.25) * (x - 0.25) + y * y;
-    // Проверка принадлежности к кардиоиде или периоду-2 
-    if ((qx * (qx + (x - 0.25)) < 0.25 * y * y) || ((x + 1) * (x + 1) + y * y < 1 / 16.0)) {
-        return max_iterations; // принадлежит множеству Мандельброта
-    }
-
-    int n = 0;
-    double tmp;
-    while (zx * zx + zy * zy < 4 && n < max_iterations)
-    {
-        tmp = zx * zx - zy * zy + x;
-        zy = 2 * zx * zy + y;
-        zx = tmp;
-        n++;
-    }
-    return n;
-}*/
 
 int	julia_set(double x, double y, t_fractal *fract)
 {
@@ -98,9 +75,25 @@ void	set_pixel(t_fractal *fract, int x, int y, int color)
 	pixel_pos = (y * fract->line_length) + (x * (fract->bits_per_pixel / 8));
 	*(unsigned int *)(fract->addr + pixel_pos) = color;
 }
-
-void	draw_fractal(t_fractal *fract, t_func color_func)
+t_color_func switch_scheme(int *current_scheme)
 {
+	int				number_of_schemes; 
+	t_color_func	color_functions[5];
+	t_color_func	selected;
+
+	color_functions[0] = get_unicorn_color;
+	color_functions[1] = get_cosmic_color;
+	color_functions[2] = get_dark_color;
+	color_functions[3] = get_zebra_color;
+	color_functions[4] = get_fire_color;
+	number_of_schemes = sizeof(color_functions) / sizeof(color_functions[0]);
+	selected = color_functions[*current_scheme];
+	*current_scheme = (*current_scheme + 1) % number_of_schemes;
+	return (selected);
+}
+void	draw_fractal(t_fractal *fract, t_color_func color_func)
+{
+	(void)color_func;
 	int		px;
 	int		py;
 	int		iterations;
@@ -126,6 +119,9 @@ void	draw_fractal(t_fractal *fract, t_func color_func)
 	}
 }
 
+
+
+
 void	init_mandelbrot(t_fractal *fractal)
 {
 	fractal->type = MANDELBROT;
@@ -137,6 +133,7 @@ void	init_mandelbrot(t_fractal *fractal)
 	fractal->offset_x = 0.0;
 	fractal->offset_y = 0.0;
 	fractal->max_iterations = 60;
+	fractal->current_scheme = 0;
 	fractal->color_func = &get_unicorn_color;
 	fractal->fractal_func = &mandelbrot_set;
 	
@@ -144,8 +141,8 @@ void	init_mandelbrot(t_fractal *fractal)
 void	init_julia(t_fractal *fractal)
 {
 	fractal->type = JULIA;
-	fractal->julia_real = -0.77;
-	fractal->julia_imag = 0.05; //fix it
+	fractal->julia_real = -0.8;
+	fractal->julia_imag = -0.2;
 	fractal->min_r = -2.0; 
     fractal->max_r = 2.0;
     fractal->min_i = -2.0;
@@ -161,13 +158,13 @@ void	init_julia(t_fractal *fractal)
 void init_burning_ship(t_fractal *fractal)
 {
     fractal->type = BURNING_SHIP;
-    fractal->min_r = -2.2; 
+    fractal->min_r = -2.0; 
     fractal->max_r = -1.7;
     fractal->min_i = -0.1;
     fractal->max_i = 0.1;
     fractal->zoom = 1.0;
-    fractal->offset_x = 0.0;
-    fractal->offset_y = 0.0;
+    fractal->offset_x = 0.13;
+    fractal->offset_y = -0.035;
     fractal->max_iterations = 100; 
 	fractal->color_func = &get_fire_color;
     fractal->fractal_func = &burning_ship_set;
@@ -218,50 +215,47 @@ void	zoom(t_fractal *fract, int x, int y, int direction)
 
 int handle_keypress(int keycode, t_fractal *fractal)
 {
-	
 	double	shift_amount;
 
 	shift_amount = (fractal->max_r - fractal->min_r) * 0.05;
-
 	if (keycode == KEY_ESC)
     {
         mlx_destroy_window(fractal->mlx, fractal->win);
         exit(0);
     }
 	else if (keycode == KEY_LEFT)
-    {
         fractal->offset_x -= shift_amount;
-    }
     else if (keycode == KEY_RIGHT)
-    {
         fractal->offset_x += shift_amount;
-    }
     else if (keycode == KEY_UP)
-    {
         fractal->offset_y -= shift_amount;
-    }
     else if (keycode == KEY_DOWN)
-    {
         fractal->offset_y += shift_amount;
-    }
 	else if (keycode == KEY_W)
 	{
 		fractal->julia_imag += 0.05;
+		printf("julia_imag: %f\n", fractal->julia_imag);
 	}
 	else if (keycode == KEY_S)
 	{
 		fractal->julia_imag -= 0.05;
+		printf("julia_imag: %f\n", fractal->julia_imag);
 	}
 	else if (keycode == KEY_A)
 	{
 		fractal->julia_real -= 0.05;
+		printf("julia_real: %f\n", fractal->julia_real);
 	}
 	else if (keycode == KEY_D)
 	{
 		fractal->julia_real += 0.05;
+		printf("julia_real: %f\n", fractal->julia_real);
 	}
-
-
+	else if (keycode == KEY_SPACE)
+	{
+		fractal->current_scheme = (fractal->current_scheme + 1) % 5;
+		fractal->color_func = switch_scheme(&fractal->current_scheme);	
+	}
 	mlx_clear_window(fractal->mlx, fractal->win);
 	draw_fractal(fractal, fractal->color_func);
 	mlx_put_image_to_window(fractal->mlx, fractal->win, fractal->img, 0, 0);
@@ -295,6 +289,7 @@ int	main(int argc, char **argv)
 		ft_printf("Error message here...\n");
 		exit(1);
 	}
+	
 	
 	fractal.mlx = mlx_init();
 	fractal.win = mlx_new_window(fractal.mlx, WIDTH, HEIGHT, "Hello world!");

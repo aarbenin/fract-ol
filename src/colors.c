@@ -46,88 +46,61 @@ int	get_cosmic_color(int iterations, int max_iterations)
 
 
 int get_zebra_color(int iterations, int max_iterations) 
-{
+{	
+	double	value;
+
     if (iterations == max_iterations)
-        return 0x000000; // Черный цвет для точек, не убегающих в бесконечность
-
+        return 0x000000; 
     // Используем синусоидальную функцию от числа итераций для создания эффекта зебры
-    double value = sin(iterations * 3); // плотность полос (красиво 3 и 0.8)
-
+    value = sin(iterations * 3); // плотность полос (красиво 3 и 0.8)
     // Если синус положительный, возвращаем белый цвет, иначе - черный
     if (value > 0)
-        return 0xFFFFFF; // Белый цвет
+        return 0xFFFFFF; 
     else
-        return 0x000000; // Черный цвет
+        return 0x000000;
 }
 
 int get_dark_color(int iterations, int max_iterations)
 {
-    if (iterations == max_iterations)
+    double	normalized;
+	int		red_intensity;
+
+	if (iterations == max_iterations)
         return 0x000000; 
-
-    // Нормализуем количество итераций для получения значения интенсивности
-    double normalized = (double)iterations / max_iterations;
-    
-    // Преобразуем нормализованное значение в интенсивность красного цвета (0 - 255)
-    int red_intensity = (int)(normalized * 255);
-
-    // Возвращаем оттенок красного с полной интенсивностью красного и нулевыми значениями для зеленого и синего
+    normalized = (double)iterations / max_iterations;
+    red_intensity = (int)(normalized * 255);
     return (red_intensity << 16) | (0 << 8) | 0;
 }
 
 int get_fire_color(int iterations, int max_iterations)
-{/*
-     if (iterations == max_iterations)
-        return 0x000000; 
+{
+    double	ratio;
+	int		red;
+	int		blue;
+	int		green;
 
-    double ratio = (double)iterations / max_iterations;
+	if (iterations == max_iterations)
+        return 0x000000; 
+    ratio = (double)iterations / max_iterations;
 
     
-    int red = (int)(255 * pow(ratio, 0.3));
-    int green = (int)(255 * pow(ratio, 0.5));
-    int blue = (int)(100 * pow(ratio, 0.7));
+    red = (int)(255 * pow(ratio, 0.3));
+    green = (int)(255 * pow(ratio, 0.5));
+    blue = (int)(100 * pow(ratio, 0.7));
 
    
-    red = red > 255 ? 255 : red;
-    green = green > 255 ? 255 : green;
-    blue = blue > 255 ? 255 : blue;
+    if (red > 255)
+		red = 255; 
+    if (blue > 255)
+		blue = 255;
+	if (green > 255)
+		green = 255;
 
-   
-    red = red < 100 ? 100 : red;
-    green = green < 50 ? 50 : green;
-
-    return (red << 16) | (green << 8) | blue;*/
-
- if (iterations == max_iterations)
-        return 0x000000; // Черный для самых внутренних точек
-
-    double t = (double)iterations / max_iterations;
-    t = pow(t, 0.4); // Используем степенное преобразование для увеличения яркости нижних итераций
-
-    // Основные компоненты огненного цвета
-    int red = (int)(9 * (1 - t) * t * t * t * 255);
-    int green = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
-    int blue = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
-
-    // Добавляем смещение, чтобы начинать с более светлых тонов
-    red += 95; // Светлее красный
-    green += 95; // Светлее зеленый
-    blue += 0; // Синий компонент не добавляем, чтобы избежать синеватого оттенка
-
-    // Ограничиваем значения до максимально возможных для RGB
-    red = red > 255 ? 255 : red;
-    green = green > 255 ? 255 : green;
-
-    // Для самых высоких итераций добавляем еще больше яркости
-    if (t > 0.8)
-    {
-        red = 255;
-        green += (int)(155 * (t - 0.8) / 0.2);
-        green = green > 255 ? 255 : green;
-    }
-
+	if (red < 100)
+		red = 100;
+	if (green < 50)
+		green = 50;
     return (red << 16) | (green << 8) | blue;
-
 }
 
 

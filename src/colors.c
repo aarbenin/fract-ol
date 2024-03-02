@@ -103,4 +103,58 @@ int get_fire_color(int iterations, int max_iterations)
     return (red << 16) | (green << 8) | blue;
 }
 
+/*
+int get_fractal_color(int iterations, int max_iterations) //oгонь
+{
+   if (iterations == max_iterations) {
+        return 0x000000; // Черный для точек внутри множества
+    }
+    
+    const int colors[] = {0x070707, 0xFF4500, 0xFFD700, 0xFFFFF0}; // Черный, Оранжевый, Желтый, Белый
+    double ratio = (double)iterations / max_iterations;
+    int color_index = ratio * (sizeof(colors)/sizeof(colors[0]) - 1);
+    double color_ratio = fmod(ratio * (sizeof(colors)/sizeof(colors[0]) - 1), 1.0);
+    
+    int start_color = colors[color_index];
+    int end_color = colors[color_index + 1];
+    
+    // Разбиение цветов на компоненты
+    int r_start = (start_color >> 16) & 0xFF;
+    int g_start = (start_color >> 8) & 0xFF;
+    int b_start = start_color & 0xFF;
+    
+    int r_end = (end_color >> 16) & 0xFF;
+    int g_end = (end_color >> 8) & 0xFF;
+    int b_end = end_color & 0xFF;
+    
+    // Интерполяция между значениями компонентов начального и конечного цвета
+    int r = r_start + (r_end - r_start) * color_ratio;
+    int g = g_start + (g_end - g_start) * color_ratio;
+    int b = b_start + (b_end - b_start) * color_ratio;
+    
+    return (r << 16) | (g << 8) | b;
+}
+
+*/
+
+int get_fractal_color(int iterations, int max_iterations) //julia
+{
+	double frequency;
+    int red, green, blue;
+
+    if (iterations == max_iterations) {
+        return 0x000000; // Черный для точек внутри множества
+    } else {
+        frequency = 0.3; // Уменьшенная частота для более плавного перехода
+
+        // Создаем плавные переходы цвета, используя sin и частоту
+        red = (int)((sin(frequency * iterations + 0) * 127) + 128); // От темно-синего к светлому
+        green = (int)((sin(frequency * iterations + 2) * 127) + 128); // Добавляем немного зеленого для холодного оттенка
+        blue = (int)((sin(frequency * iterations + 4) * 127) + 128); // Основной синий цвет
+
+        // Использование sin создает эффект морозного узора
+        return (red << 16) | (green << 8) | blue;
+    }
+}
+
 

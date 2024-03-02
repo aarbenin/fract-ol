@@ -33,13 +33,18 @@ typedef struct s_fractal t_fractal;
 typedef int (*t_color_func)(int, int);
 typedef int (*t_fractal_func)(double x, double y, t_fractal *fract);
 
-
+typedef struct  s_complex
+{
+    double      re;
+    double      im;
+}               t_complex;
 
 typedef enum e_fractal_type
 {
     MANDELBROT,
     JULIA,
-    BURNING_SHIP
+    BURNING_SHIP,
+    INVALID
     
 } t_fractal_type;
 
@@ -63,6 +68,7 @@ typedef struct s_fractal
     double min_r;
     double max_i;
     double min_i;
+    double  scale_depth;
 
     double  julia_real;
     double  julia_imag;
@@ -72,6 +78,7 @@ typedef struct s_fractal
 
    
 }   t_fractal;
+
 
 
 
@@ -87,8 +94,11 @@ int	get_cosmic_color(int iterations, int max_iterations);
 int get_dark_color(int iterations, int max_iterations);
 int get_zebra_color(int iterations, int max_iterations);
 int get_fire_color(int iterations, int max_iterations);
+int get_fractal_color(int iterations, int max_iterations);
 
-
+//_________to libft________________//
+double ft_atof(const char *str);
+int ft_strcmp(const char *s1, const char *s2);
 
 
 

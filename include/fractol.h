@@ -11,11 +11,13 @@
 # define KEY_DOWN 125
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
-# define KEY_W 13
+# define KEY_W 131
 # define KEY_A 0
 # define KEY_S 1
 # define KEY_D 2
 # define KEY_SPACE 49
+# define KEY_1 18
+# define KEY_2 19
 
 // Mouse codes
 # define SCROLL_UP 4
@@ -89,6 +91,7 @@ typedef struct s_fractal
 # include "libft.h"
 
 
+
 int	get_unicorn_color(int iterations, int max_iterations);
 int	get_cosmic_color(int iterations, int max_iterations);
 int get_dark_color(int iterations, int max_iterations);
@@ -100,6 +103,21 @@ int get_fractal_color(int iterations, int max_iterations);
 double ft_atof(const char *str);
 int ft_strcmp(const char *s1, const char *s2);
 
+//____________sets_______________//
+// int	mandelbrot_set(double x, double y, t_fractal *fract);
+// int	julia_set(double x, double y, t_fractal *fract);
+// int	burning_ship_set(double x, double y, t_fractal *fract);
+
+
+
+// //__________inits_________________//
+// void init_mandelbrot(t_fractal *fractal);
+// void init_julia(t_fractal *fractal);
+// void init_burning_ship(t_fractal *fractal);
+
+//____________parameters_______________//
+// void parse_arguments(int argc, char **argv, t_fractal *fractal);
+// void print_usage(void);
 
 
 #endif

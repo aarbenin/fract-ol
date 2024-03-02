@@ -1,5 +1,5 @@
 #include "../include/fractol.h"
-#include <string.h>
+
 //______________MATH________________//
 // t_complex   complex_add(t_complex a, t_complex b)
 // {
@@ -205,19 +205,25 @@ void	draw_fractal(t_fractal *fract, t_color_func color_func)
 {
 	int		px;
 	int		py;
-	double	scaleX = (fract->max_r - fract->min_r) / WIDTH;
-	double	scaleY = (fract->max_i - fract->min_i) / HEIGHT;
+	double	scale_x;
+	double	scale_y;
+	double	x;
+	double	y;
+	int		iterations;
+// убрать две лишние переменные, возможно, отправить их с fract? или просто избавиться
 
+	scale_x = (fract->max_r - fract->min_r) / WIDTH;
+	scale_y = (fract->max_i - fract->min_i) / HEIGHT;
 	px = 0;
 	while (px < WIDTH)
 	{
 		py = 0;
 		while (py < HEIGHT)
 		{
- 			double x = px * scaleX + fract->min_r + fract->offset_x;
-            double y = py * scaleY + fract->min_i + fract->offset_y;
+ 			x = px * scale_x + fract->min_r + fract->offset_x;
+            y = py * scale_y + fract->min_i + fract->offset_y;
 
-			int iterations = fract->fractal_func(x, y, fract);
+			iterations = fract->fractal_func(x, y, fract);
 			fract->color = color_func(iterations, fract->max_iterations);
 			set_pixel(fract, px, py, fract->color);
 			py++;
@@ -322,43 +328,42 @@ void	zoom(t_fractal *fract, int x, int y, int direction)
 
 void zoom(t_fractal *fract, int x, int y, int direction)
 {
-    double	zoom_actor;
+    double	zoom_factor;
     double	mouse_re; 
 	double	mouse_im;
 
-    // Установка zoom_actor в зависимости от направления
     if (direction == SCROLL_UP) {
-        zoom_actor = 1.1;
+        zoom_factor = 1.1;
     } else {
-        zoom_actor = 0.9;
+        zoom_factor = 0.9;
     }
 
-    // Расчет координат мыши в комплексной плоскости
+    // координаты мыши в комплексной плоскости
     mouse_re = (double)x / WIDTH * (fract->max_r - fract->min_r) + fract->min_r;
     mouse_im = (double)y / HEIGHT * (fract->max_i - fract->min_i) + fract->min_i;
 
-    // Применение масштабирования
-    fract->min_r = mouse_re + (fract->min_r - mouse_re) * zoom_actor;
-    fract->max_r = mouse_re + (fract->max_r - mouse_re) * zoom_actor;
-    fract->min_i = mouse_im + (fract->min_i - mouse_im) * zoom_actor;
-    fract->max_i = mouse_im + (fract->max_i - mouse_im) * zoom_actor;
+    // масштабирование
+    fract->min_r = mouse_re + (fract->min_r - mouse_re) * zoom_factor;
+    fract->max_r = mouse_re + (fract->max_r - mouse_re) * zoom_factor;
+    fract->min_i = mouse_im + (fract->min_i - mouse_im) * zoom_factor;
+    fract->max_i = mouse_im + (fract->max_i - mouse_im) * zoom_factor;
 
-    // Адаптация количества итераций в зависимости от направления
-    if (direction == SCROLL_UP) //уменьшение!!!!!
-	{
-		fract->max_iterations -= 5;
-        if (fract->max_iterations < 60) 
-            fract->max_iterations = 60;
+    // адаптированный зум
+    // if (direction == SCROLL_UP) //уменьшение!!!!!
+	// {
+	// 	fract->max_iterations -= 5;
+    //     if (fract->max_iterations < 60) 
+    //         fract->max_iterations = 60;
         
         
-		printf("iterations: %d\n", fract->max_iterations);
-    } else {
-        fract->max_iterations += 10;
-        if (fract->max_iterations > 500) 
-            fract->max_iterations = 500;
+	// 	printf("iterations: %d\n", fract->max_iterations);
+    // } else {
+    //     fract->max_iterations += 10;
+    //     if (fract->max_iterations > 500) 
+    //         fract->max_iterations = 500;
         
-		printf("iterations: %d\n", fract->max_iterations);
-    }
+	// 	printf("iterations: %d\n", fract->max_iterations);
+    // }
 }
 
 
@@ -411,6 +416,19 @@ int handle_keypress(int keycode, t_fractal *fractal)
 		fractal->current_scheme = (fractal->current_scheme) % 6;
 		fractal->color_func = switch_scheme(&fractal->current_scheme);	
 	}
+	else if (keycode == KEY_1)
+	{
+		fractal->max_iterations -= 10;
+		ft_printf("max_iterations: %d\n", fractal->max_iterations);
+	}
+	else if (keycode == KEY_2)
+	{
+		fractal->max_iterations += 10;
+		if (fractal->max_iterations < 0)
+			fractal->max_iterations = 0;
+		ft_printf("max_iterations: %d\n", fractal->max_iterations);
+	}
+		
 	mlx_clear_window(fractal->mlx, fractal->win);
 	draw_fractal(fractal, fractal->color_func);
 	mlx_put_image_to_window(fractal->mlx, fractal->win, fractal->img, 0, 0);
@@ -455,19 +473,35 @@ void print_usage(void)
     ft_printf("  - julia or j\n");
     ft_printf("  - ship or s (for burning ship)\n");
 }
-int	str_is_num(char *str)
+int	is_valid_float(char *str)
 {
-	while (*str)
+	int	i;
+	int	dot_count;
+
+	i = 0;
+	dot_count = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	if (str[i] == '\0')
+		return (0);
+	while (str[i])
 	{
-		if(!ft_isdigit(str))
+		if (str[i] == '.')
+		{
+			dot_count++;
+			if (dot_count > 1)
+				return (0);
+		}
+		else if (!ft_isdigit(str[i]))
 			return (0);
-		str++;
+		i++;
 	}
 	return (1);
 }
+
 static void handle_julia_params(int argc, char **argv, t_fractal *fractal)
 {
-    if (argc == 4 && str_is_num(argv[2] && str_is_num(argv[3])))
+    if (argc == 4 && is_valid_float(argv[2]) && is_valid_float(argv[3]))
     {
         fractal->julia_real = ft_atof(argv[2]);
         fractal->julia_imag = ft_atof(argv[3]);
@@ -486,28 +520,60 @@ static void handle_julia_params(int argc, char **argv, t_fractal *fractal)
 	}
     	
 }
+char	*lower_str(char *str)
+{
+	if (!str)
+		return(NULL);
+	while (*str)
+	{
+		str = ft_tolower(str);
+		str++;
+	}
+	return (str);
+}
 
+int	type_match(char *str1, char *str2, char *str3)
+{
+	int	i;
+
+	i = 0;
+	while (str1[i])
+	{
+		str1[1] = ft_tolower[str1];
+		i++;
+	}
+}
 
 
 void parse_arguments(int argc, char **argv, t_fractal *fractal)
 {
+	// fractal->type = INVALID;
+	// if (argc < 2 || argc > 4) 
+	// {
+    //     print_usage();
+    //     exit (1);
+    // }
+	// else if (argc != 2 && ft_strcmp(argv[1], "julia") != 0 )
+	// {
+	// 	print_usage();
+    //     exit (1);
+	// }
+	
+	// init_fractal(fractal, argv);
+	// if (fractal->type == JULIA)
+    // {
+    //     handle_julia_params(argc, argv, fractal);
+    // }
+	// else if (fractal->type == INVALID)
+    // {
+    //     ft_printf("Error: '%s' is not a valid fractal name.\n\n", argv[1]);
+    //     print_usage();
+    //     exit (1);
+    // }
+
 	fractal->type = INVALID;
-	if (argc < 2 || argc > 4) 
-	{
-        print_usage();
-        exit (1);
-    }
-	init_fractal(fractal, argv);
-	if (fractal->type == JULIA)
-    {
-        handle_julia_params(argc, argv, fractal);
-    }
-	else if (fractal->type == INVALID)
-    {
-        ft_printf("Error: '%s' is not a valid fractal name.\n\n", argv[1]);
-        print_usage();
-        exit (1);
-    }
+	if (ft_strcmp(argv[1], "julia") == 0)
+
     
 }
 

@@ -3,7 +3,10 @@
 
 #define HEIGHT 900
 #define WIDTH 900
-#define MAX_ITERATIONS 60
+#define MAX_ITERATIONS 1000
+#define MIN_ITERATIONS 50
+#define BASE_ITERATIONS 100
+#define ITERATIONS_STEP 5
 
 // Key codes
 # define KEY_ESC 53
@@ -11,7 +14,7 @@
 # define KEY_DOWN 125
 # define KEY_LEFT 123
 # define KEY_RIGHT 124
-# define KEY_W 131
+# define KEY_W 13
 # define KEY_A 0
 # define KEY_S 1
 # define KEY_D 2
@@ -70,7 +73,11 @@ typedef struct s_fractal
     double min_r;
     double max_i;
     double min_i;
+
     double  scale_depth;
+
+    double	scale_x;
+	double	scale_y;
 
     double  julia_real;
     double  julia_imag;
@@ -81,7 +88,12 @@ typedef struct s_fractal
    
 }   t_fractal;
 
-
+typedef struct s_point {
+    int     px;
+    int     py;       // Позиции пикселя на экране
+    double  x; 
+    double  y;      // Координаты в пространстве фрактала
+}               t_point;
 
 
 # include "mlx.h"
@@ -102,6 +114,9 @@ int get_fractal_color(int iterations, int max_iterations);
 //_________to libft________________//
 double ft_atof(const char *str);
 int ft_strcmp(const char *s1, const char *s2);
+
+//_________math_________________//
+
 
 //____________sets_______________//
 // int	mandelbrot_set(double x, double y, t_fractal *fract);

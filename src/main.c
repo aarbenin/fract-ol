@@ -1,28 +1,6 @@
 #include "../include/fractol.h"
+#include <string.h>
 
-//______________MATH________________//
-// t_complex   complex_add(t_complex a, t_complex b)
-// {
-//     t_complex   result;
-
-//     result.re = a.re + b.re;
-//     result.im = a.im + b.im;
-//     return (result);
-// }
-
-// t_complex   complex_square(t_complex a)
-// {
-//     t_complex   result;
-
-//     result.re = a.re * a.re - a.im * a.im;
-//     result.im = 2 * a.re * a.im;
-//     return (result);
-// }
-
-// double  complex_abs(t_complex a)
-// {
-//     return (sqrt(a.re * a.re + a.im * a.im));
-// }
 
 int	mandelbrot_set(double x, double y, t_fractal *fract)
 {
@@ -48,78 +26,47 @@ int	mandelbrot_set(double x, double y, t_fractal *fract)
 	return (n);
 }
 
-
-
-
-// int	julia_set(double x, double y, t_fractal *fract)
-// {
-// 	double	zx;
-// 	double	zy;
-// 	int		n;
-// 	double	tmp;
-
-// 	zx = x;
-// 	zy = y;
-// 	n = 0;
-// 	while (zx * zx + zy * zy < 4 && n < fract->max_iterations)
-// 	{
-// 		tmp = zx * zx - zy * zy + fract->julia_real;
-// 		zy = 2 * zx * zy + fract->julia_imag;
-// 		zx = tmp;
-// 		n++;
-// 	}
-// 	return (n);
-// }
 int julia_set(double x, double y, t_fractal *fract)
 {
-	double zx = x;
-	double zy = y;
-	int n = 0;
-
+	double zx;
+	double zy;
+	double zx2;
+	double zy2;
+	int n;
+	
+	zx = x;
+	zy = y;
+	n = 0;
     // Предварительное вычисление квадратов zx и zy
-	double zx2 = zx * zx;
-	double zy2 = zy * zy;
+	zx2 = zx * zx;
+	zy2 = zy * zy;
 
 	while (zx2 + zy2 < 4 && n < fract->max_iterations)
 	{
 		// Используем заранее вычисленные квадраты
 		zy = 2 * zx * zy + fract->julia_imag;
 		zx = zx2 - zy2 + fract->julia_real;
-
         // Обновляем квадраты для следующей итерации
 		zx2 = zx * zx;
 		zy2 = zy * zy;
-
 		n++;
 	}
 	return n;
 }
 
-// int burning_ship_set(double x, double y, t_fractal *fract)
-// {
-//     double zx;
-//     double zy;
-//     double tmp;
-//     int n;
-
-// 	zx = 0;
-// 	zy = 0;
-// 	n = 0;
-//     while (zx * zx + zy * zy < 4 && n < fract->max_iterations)
-//     {
-//         tmp = zx * zx - zy * zy + x;
-//         zy = fabs(2 * zx * zy) + y;
-//         zx = tmp;
-//         n++;
-//     }
-//     return n;
-// }
 int burning_ship_set(double x, double y, t_fractal *fract)
 {
-    double zx = 0, zy = 0; // Начальные значения zx и zy
-    int n = 0;
-    double zx2 = 0, zy2 = 0; // Для хранения квадратов zx и zy
+    double	zx; 
+	double	zy; // Начальные значения zx и zy
+    double	zx2;
+	double	zy2; // Для хранения квадратов zx и zy
+	int		n;
 
+	zx = 0;
+	zy = 0;
+	zx2 = 0;
+	zy2 = 0;
+	n = 0;
     while (zx2 + zy2 < 4 && n < fract->max_iterations)
     {
         zy = fabs(2 * zx * zy) + y;
@@ -127,20 +74,10 @@ int burning_ship_set(double x, double y, t_fractal *fract)
 
         zx2 = zx * zx; // Обновляем квадраты
         zy2 = zy * zy;
-
         n++;
     }
     return n;
 }
-
-
-// void	set_pixel(t_fractal *fract, int x, int y, int color)
-// {
-// 	int	pixel_pos;
-
-// 	pixel_pos = (y * fract->line_length) + (x * (fract->bits_per_pixel / 8));
-// 	*(unsigned int *)(fract->addr + pixel_pos) = color;
-// }
 
 void	set_pixel(t_fractal *fract, int x, int y, int color)
 {
@@ -173,62 +110,31 @@ t_color_func switch_scheme(int *current_scheme)
 	*current_scheme = (*current_scheme + 1) % number_of_schemes;
 	return (selected);
 }
-// void	draw_fractal(t_fractal *fract, t_color_func color_func)
-// {
-// 	(void)color_func;
-// 	int		px;
-// 	int		py;
-// 	int		iterations;
-// 	double	x;
-// 	double	y;
-
-// 	px = 0;
-// 	py = 0;
-// 	while (px < WIDTH)
-// 	{
-// 		while (py < HEIGHT)
-// 		{
-//  			x = ((double)px / WIDTH) * (fract->max_r - fract->min_r) + fract->min_r + fract->offset_x;
-//             y = ((double)py / HEIGHT) * (fract->max_i - fract->min_i) + fract->min_i + fract->offset_y;
-
-// 			iterations = fract->fractal_func(x, y, fract);
-// 			fract->color = color_func(iterations, fract->max_iterations);
-// 			set_pixel(fract, px, py, fract->color);
-// 			py++;
-// 		}
-// 		py = 0;
-// 		px++;
-// 	}
-// }
 
 void	draw_fractal(t_fractal *fract, t_color_func color_func)
 {
-	int		px;
-	int		py;
+	t_point	point;
 	double	scale_x;
 	double	scale_y;
-	double	x;
-	double	y;
 	int		iterations;
-// убрать две лишние переменные, возможно, отправить их с fract? или просто избавиться
 
 	scale_x = (fract->max_r - fract->min_r) / WIDTH;
 	scale_y = (fract->max_i - fract->min_i) / HEIGHT;
-	px = 0;
-	while (px < WIDTH)
+	point.px = 0;
+	while (point.px < WIDTH)
 	{
-		py = 0;
-		while (py < HEIGHT)
+		point.py = 0;
+		while (point.py < HEIGHT)
 		{
- 			x = px * scale_x + fract->min_r + fract->offset_x;
-            y = py * scale_y + fract->min_i + fract->offset_y;
+ 			point.x = point.px * scale_x + fract->min_r + fract->offset_x;
+            point.y = point.py * scale_y + fract->min_i + fract->offset_y;
 
-			iterations = fract->fractal_func(x, y, fract);
+			iterations = fract->fractal_func(point.x, point.y, fract);
 			fract->color = color_func(iterations, fract->max_iterations);
-			set_pixel(fract, px, py, fract->color);
-			py++;
+			set_pixel(fract, point.px, point.py, fract->color);
+			point.py++;
 		}
-		px++;
+		point.px++;
 	}
 }
 
@@ -244,10 +150,11 @@ void	init_mandelbrot(t_fractal *fractal)
 	fractal->zoom = 1.0;
 	fractal->offset_x = 0.0;
 	fractal->offset_y = 0.0;
-	fractal->max_iterations = 60;
+	fractal->max_iterations = 100;
 	fractal->current_scheme = 0;
 	fractal->color_func = &get_fractal_color;
 	fractal->fractal_func = &mandelbrot_set;
+	fractal->scale_depth = 0;
 	
 }
 void	init_julia(t_fractal *fractal)
@@ -265,7 +172,7 @@ void	init_julia(t_fractal *fractal)
 	fractal->max_iterations = 500;
 	fractal->color_func = &get_cosmic_color;
 	fractal->fractal_func = &julia_set;
-
+	fractal->scale_depth = 0;
 }
 void init_burning_ship(t_fractal *fractal)
 {
@@ -280,6 +187,7 @@ void init_burning_ship(t_fractal *fractal)
     fractal->max_iterations = 100; 
 	fractal->color_func = &get_fire_color;
     fractal->fractal_func = &burning_ship_set;
+	fractal->scale_depth = 0;
 }
 
 
@@ -325,6 +233,10 @@ void	zoom(t_fractal *fract, int x, int y, int direction)
 }
 */
 
+int	calc_iterations (double scale_depth)
+{
+	 return (int)(BASE_ITERATIONS + scale_depth * ITERATIONS_STEP);
+}
 
 void zoom(t_fractal *fract, int x, int y, int direction)
 {
@@ -332,58 +244,39 @@ void zoom(t_fractal *fract, int x, int y, int direction)
     double	mouse_re; 
 	double	mouse_im;
 
-    if (direction == SCROLL_UP) {
+    if (direction == SCROLL_UP)
         zoom_factor = 1.1;
-    } else {
+	else 
         zoom_factor = 0.9;
-    }
-
     // координаты мыши в комплексной плоскости
     mouse_re = (double)x / WIDTH * (fract->max_r - fract->min_r) + fract->min_r;
     mouse_im = (double)y / HEIGHT * (fract->max_i - fract->min_i) + fract->min_i;
-
     // масштабирование
     fract->min_r = mouse_re + (fract->min_r - mouse_re) * zoom_factor;
     fract->max_r = mouse_re + (fract->max_r - mouse_re) * zoom_factor;
     fract->min_i = mouse_im + (fract->min_i - mouse_im) * zoom_factor;
     fract->max_i = mouse_im + (fract->max_i - mouse_im) * zoom_factor;
-
-    // адаптированный зум
-    // if (direction == SCROLL_UP) //уменьшение!!!!!
-	// {
-	// 	fract->max_iterations -= 5;
-    //     if (fract->max_iterations < 60) 
-    //         fract->max_iterations = 60;
-        
-        
-	// 	printf("iterations: %d\n", fract->max_iterations);
-    // } else {
-    //     fract->max_iterations += 10;
-    //     if (fract->max_iterations > 500) 
-    //         fract->max_iterations = 500;
-        
-	// 	printf("iterations: %d\n", fract->max_iterations);
-    // }
+    if (direction == SCROLL_UP) //уменьшение!!!!!
+	{
+		fract->scale_depth -= 1;
+		printf("iterations: %d\n", fract->max_iterations);
+    } 
+	else 
+	{
+    	fract->scale_depth += 1;
+		printf("iterations: %d\n", fract->max_iterations);
+    }
+	fract->max_iterations = calc_iterations(fract->scale_depth);
+	if (fract->max_iterations > MAX_ITERATIONS)
+		fract->max_iterations = MAX_ITERATIONS;
+	if (fract->max_iterations < MIN_ITERATIONS)
+		fract->max_iterations = MIN_ITERATIONS;
 }
 
 
-
-
-
-
-
-int handle_keypress(int keycode, t_fractal *fractal)
+void handle_movement(t_fractal *fractal, int keycode, double shift_amount)
 {
-	printf("keycode: %d\n", keycode);
-	double	shift_amount;
-
-	shift_amount = (fractal->max_r - fractal->min_r) * 0.05;
-	if (keycode == KEY_ESC)
-    {
-        mlx_destroy_window(fractal->mlx, fractal->win);
-        exit(0);
-    }
-	else if (keycode == KEY_LEFT)
+	if (keycode == KEY_LEFT)
         fractal->offset_x -= shift_amount;
     else if (keycode == KEY_RIGHT)
         fractal->offset_x += shift_amount;
@@ -391,7 +284,35 @@ int handle_keypress(int keycode, t_fractal *fractal)
         fractal->offset_y -= shift_amount;
     else if (keycode == KEY_DOWN)
         fractal->offset_y += shift_amount;
-	else if (keycode == KEY_W)
+}
+void handle_iterations(t_fractal *fractal, int keycode)
+{
+	if (keycode == KEY_1)
+	{
+		fractal->max_iterations -= 10;
+		ft_printf("max_iterations: %d\n", fractal->max_iterations);
+	}
+	else if (keycode == KEY_2)
+	{
+		fractal->max_iterations += 10;
+		if (fractal->max_iterations < 0)
+			fractal->max_iterations = 0;
+		ft_printf("max_iterations: %d\n", fractal->max_iterations);
+	}
+		
+}
+
+void handle_color_scheme(t_fractal *fractal, int keycode)
+{
+	if (keycode == KEY_SPACE)
+	{
+		fractal->current_scheme = (fractal->current_scheme) % 6;
+		fractal->color_func = switch_scheme(&fractal->current_scheme);	
+	}
+}
+void handle_julia(t_fractal *fractal, int keycode)
+{
+	if (keycode == KEY_W)
 	{
 		fractal->julia_imag += 0.05;
 		printf("julia_imag: %f\n", fractal->julia_imag);
@@ -411,24 +332,25 @@ int handle_keypress(int keycode, t_fractal *fractal)
 		fractal->julia_real += 0.05;
 		printf("julia_real: %f\n", fractal->julia_real);
 	}
-	else if (keycode == KEY_SPACE)
-	{
-		fractal->current_scheme = (fractal->current_scheme) % 6;
-		fractal->color_func = switch_scheme(&fractal->current_scheme);	
-	}
-	else if (keycode == KEY_1)
-	{
-		fractal->max_iterations -= 10;
-		ft_printf("max_iterations: %d\n", fractal->max_iterations);
-	}
-	else if (keycode == KEY_2)
-	{
-		fractal->max_iterations += 10;
-		if (fractal->max_iterations < 0)
-			fractal->max_iterations = 0;
-		ft_printf("max_iterations: %d\n", fractal->max_iterations);
-	}
-		
+}
+int handle_keypress(int keycode, t_fractal *fractal)
+{
+	//printf("keycode: %d\n", keycode);
+	double	shift_amount;
+
+	shift_amount = (fractal->max_r - fractal->min_r) * 0.05;
+	if (keycode == KEY_ESC)
+    {
+        mlx_destroy_window(fractal->mlx, fractal->win);
+        exit(0);
+    }
+
+	handle_movement(fractal, keycode, shift_amount);
+    handle_julia(fractal, keycode);
+    handle_iterations(fractal, keycode);
+    handle_color_scheme(fractal, keycode);
+
+
 	mlx_clear_window(fractal->mlx, fractal->win);
 	draw_fractal(fractal, fractal->color_func);
 	mlx_put_image_to_window(fractal->mlx, fractal->win, fractal->img, 0, 0);
@@ -469,10 +391,21 @@ void print_usage(void)
 {
     ft_printf("Usage: ./fractol [fractal]\n");
     ft_printf("Available fractals:\n");
-    ft_printf("  - mandelbrot or m\n");
-    ft_printf("  - julia or j\n");
-    ft_printf("  - ship or s (for burning ship)\n");
+    ft_printf("  - mandelbrot\n");
+    ft_printf("  - julia\n");
+    ft_printf("  - ship (for burning ship)\n");
 }
+void print_julia_usage(void) 
+{
+    ft_printf("\nThe Julia set requires two additional parameters in either of the following formats:\n");
+    ft_printf("	./fractol julia <real_part> <imaginary_part>\n");
+    ft_printf("	./fractol julia \"<real_part>\" \"<imaginary_part>\"\n\n");
+    ft_printf("Examples:\n");
+    ft_printf("	./fractol julia -0.8 0.156\n");
+    ft_printf("	./fractol julia \"-0.8\" \"0.156\"\n\n");
+    ft_printf("For generating the Julia set with default parameters, run ./fractol julia\n\n");
+}
+
 int	is_valid_float(char *str)
 {
 	int	i;
@@ -501,78 +434,65 @@ int	is_valid_float(char *str)
 
 static void handle_julia_params(int argc, char **argv, t_fractal *fractal)
 {
-    if (argc == 4 && is_valid_float(argv[2]) && is_valid_float(argv[3]))
+    if (argc < 2) 
+	{
+        print_usage();
+        exit(1);
+    }
+	if (argc == 4 && is_valid_float(argv[2]) && is_valid_float(argv[3]))
     {
         fractal->julia_real = ft_atof(argv[2]);
         fractal->julia_imag = ft_atof(argv[3]);
     }
 	else if (argc == 2)
 	{
-		ft_printf("A Julia set was generated using default parameters\n");
-		printf("For custom parameters run: ./fractol julia <real_part> <imaginary_part>\n");
+		ft_printf("\nA Julia set was generated using default parameters\n");
+		printf("For custom parameters run: ./fractol julia <real_part> <imaginary_part>\n \
+		The recommended range for both parameters is from -2 to 2.\n");
 		ft_printf("You can also adjust parameters in real-time using the WASD keys.\n");
 	}
 	else
 	{
-		ft_printf("Error: Julia set requires two additional parameters: <real_part> <imaginary_part>\n\n");
-		print_usage();
+		ft_printf("Error: invalid parameters\n");
+		print_julia_usage();
     	exit (1);
 	}
     	
-}
-char	*lower_str(char *str)
-{
-	if (!str)
-		return(NULL);
-	while (*str)
-	{
-		str = ft_tolower(str);
-		str++;
-	}
-	return (str);
-}
-
-int	type_match(char *str1, char *str2, char *str3)
-{
-	int	i;
-
-	i = 0;
-	while (str1[i])
-	{
-		str1[1] = ft_tolower[str1];
-		i++;
-	}
 }
 
 
 void parse_arguments(int argc, char **argv, t_fractal *fractal)
 {
-	// fractal->type = INVALID;
-	// if (argc < 2 || argc > 4) 
-	// {
-    //     print_usage();
-    //     exit (1);
-    // }
-	// else if (argc != 2 && ft_strcmp(argv[1], "julia") != 0 )
-	// {
-	// 	print_usage();
-    //     exit (1);
-	// }
-	
-	// init_fractal(fractal, argv);
-	// if (fractal->type == JULIA)
-    // {
-    //     handle_julia_params(argc, argv, fractal);
-    // }
-	// else if (fractal->type == INVALID)
-    // {
-    //     ft_printf("Error: '%s' is not a valid fractal name.\n\n", argv[1]);
-    //     print_usage();
-    //     exit (1);
-    // }
-
 	fractal->type = INVALID;
-	if (ft_strcmp(argv[1], "julia") == 0)
+	if (argc < 2 || argc > 4) 
+	{
+        print_usage();
+        exit (1);
+    }
+
+	init_fractal(fractal, argv);
+
+	if (fractal->type == JULIA)
+    {
+        handle_julia_params(argc, argv, fractal);
+    }
+	else if (argc != 2)
+	{
+		ft_printf("Error: Only the Julia set accepts additional parameters.\n\n");
+		print_usage();
+        exit (1);
+	}
+	
+	
+	if (fractal->type == INVALID)
+    {
+        ft_printf("Error: '%s' is not a valid fractal name.\n\n", argv[1]);
+        print_usage();
+        exit (1);
+    }
+
+	
+
 
     
 }

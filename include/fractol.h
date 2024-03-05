@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   fractol.h                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aarbenin <aarbenin@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/05 12:59:50 by aarbenin          #+#    #+#             */
+/*   Updated: 2024/03/05 12:59:54 by aarbenin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef FRACTOL_H
 #define FRACTOL_H
 
@@ -109,7 +121,8 @@ int	get_cosmic_color(int iterations, int max_iterations);
 int get_dark_color(int iterations, int max_iterations);
 int get_zebra_color(int iterations, int max_iterations);
 int get_fire_color(int iterations, int max_iterations);
-int get_fractal_color(int iterations, int max_iterations);
+int get_neon_color(int iterations, int max_iterations);
+int get_grey_color(int iterations, int max_iteerations);
 
 //_________to libft________________//
 double ft_atof(const char *str);
@@ -119,9 +132,9 @@ int ft_strcmp(const char *s1, const char *s2);
 
 
 //____________sets_______________//
-// int	mandelbrot_set(double x, double y, t_fractal *fract);
-// int	julia_set(double x, double y, t_fractal *fract);
-// int	burning_ship_set(double x, double y, t_fractal *fract);
+int	mandelbrot_set(double x, double y, t_fractal *fract);
+int	julia_set(double x, double y, t_fractal *fract);
+int	burning_ship_set(double x, double y, t_fractal *fract);
 
 
 
@@ -134,5 +147,6 @@ int ft_strcmp(const char *s1, const char *s2);
 // void parse_arguments(int argc, char **argv, t_fractal *fractal);
 // void print_usage(void);
 
+void	zoom(t_fractal *fract, int x, int y, int direction);
 
 #endif

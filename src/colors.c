@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   colors.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aarbenin <aarbenin@student.hive.fi>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/05 12:57:11 by aarbenin          #+#    #+#             */
+/*   Updated: 2024/03/05 12:57:13 by aarbenin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/fractol.h"
 
 int	get_unicorn_color(int iterations, int max_iterations)
@@ -19,6 +31,17 @@ int	get_unicorn_color(int iterations, int max_iterations)
 	}
 }
 
+int	get_grey_color(int iterations, int max_iterations) //grey
+{
+    int color;
+
+    color = (255 * iterations) / max_iterations;
+    if (iterations == max_iterations)
+ 		return (0x000000);
+    return (color << 16) | (color << 8) | color;
+}
+
+
 int	get_cosmic_color(int iterations, int max_iterations)
 {
 	int		color;
@@ -29,7 +52,6 @@ int	get_cosmic_color(int iterations, int max_iterations)
 
 	color = 0;
 	t = (double)iterations / max_iterations;
-	// Цвета: черный в центре, переходящий в жёлтый и белый на границах,на фоне синего
 	if (iterations < max_iterations)
 	{
 		// Интерполяция между черным и желтым
@@ -51,7 +73,6 @@ int get_zebra_color(int iterations, int max_iterations)
 
     if (iterations == max_iterations)
         return 0x000000; 
-    // Используем синусоидальную функцию от числа итераций для создания эффекта зебры
     value = sin(iterations * 3); // плотность полос (красиво 3 и 0.8)
     // Если синус положительный, возвращаем белый цвет, иначе - черный
     if (value > 0)
@@ -60,17 +81,6 @@ int get_zebra_color(int iterations, int max_iterations)
         return 0x000000;
 }
 
-int get_dark_color(int iterations, int max_iterations)
-{
-    double	normalized;
-	int		red_intensity;
-
-	if (iterations == max_iterations)
-        return 0x000000; 
-    normalized = (double)iterations / max_iterations;
-    red_intensity = (int)(normalized * 255);
-    return (red_intensity << 16) | (0 << 8) | 0;
-}
 
 int get_fire_color(int iterations, int max_iterations)
 {
@@ -83,12 +93,10 @@ int get_fire_color(int iterations, int max_iterations)
         return 0x000000; 
     ratio = (double)iterations / max_iterations;
 
-    
     red = (int)(255 * pow(ratio, 0.3));
     green = (int)(255 * pow(ratio, 0.5));
     blue = (int)(100 * pow(ratio, 0.7));
 
-   
     if (red > 255)
 		red = 255; 
     if (blue > 255)
@@ -103,11 +111,12 @@ int get_fire_color(int iterations, int max_iterations)
     return (red << 16) | (green << 8) | blue;
 }
 
-/*
-int get_fractal_color(int iterations, int max_iterations) //oгонь
+
+int get_dark_color(int iterations, int max_iterations) //oгонь
 {
+	
    if (iterations == max_iterations) {
-        return 0x000000; // Черный для точек внутри множества
+        return 0x000000; 
     }
     
     const int colors[] = {0x070707, 0xFF4500, 0xFFD700, 0xFFFFF0}; // Черный, Оранжевый, Желтый, Белый
@@ -135,24 +144,20 @@ int get_fractal_color(int iterations, int max_iterations) //oгонь
     return (r << 16) | (g << 8) | b;
 }
 
-*/
 
-int get_fractal_color(int iterations, int max_iterations) //julia
+int get_neon_color(int iterations, int max_iterations)
 {
 	double frequency;
     int red, green, blue;
 
     if (iterations == max_iterations) {
-        return 0x000000; // Черный для точек внутри множества
+        return 0x000000;
     } else {
-        frequency = 0.3; // Уменьшенная частота для более плавного перехода
+        frequency = 0.3;
+        red = (int)((sin(frequency * iterations + 0) * 127) + 128);
+        green = (int)((sin(frequency * iterations + 2) * 127) + 128);
+        blue = (int)((sin(frequency * iterations + 4) * 127) + 128); 
 
-        // Создаем плавные переходы цвета, используя sin и частоту
-        red = (int)((sin(frequency * iterations + 0) * 127) + 128); // От темно-синего к светлому
-        green = (int)((sin(frequency * iterations + 2) * 127) + 128); // Добавляем немного зеленого для холодного оттенка
-        blue = (int)((sin(frequency * iterations + 4) * 127) + 128); // Основной синий цвет
-
-        // Использование sin создает эффект морозного узора
         return (red << 16) | (green << 8) | blue;
     }
 }

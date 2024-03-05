@@ -22,13 +22,13 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 LIBFT = $(LIBFT_PATH)/libft.a
 MLX = $(MLX_PATH)/libmlx.a
 
-# Платформо-зависимые переменные и флаги
+# Платформо-зависимые флаги
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
     LFLAGS = -L$(MLX_PATH) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
 endif
 ifeq ($(UNAME_S),Darwin)
-    LFLAGS = -L$(MLX_PATH) -lmlx -framework OpenGL -framework AppKit
+	LFLAGS = -L$(MLX_PATH) -lmlx -framework OpenGL -framework AppKit
 endif
 
 all: $(NAME)

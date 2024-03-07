@@ -15,14 +15,14 @@ int	mandelbrot_set(double x, double y, t_fractal *fract)
 {
 	double	zx;
 	double	zy;
-	double	qx;
+	double	quick_check;
 	int		n;
 	double	tmp;
 
 	zx = 0;
 	zy = 0;
-	qx = (x - 0.25) * (x - 0.25) + y * y;
-	if ((qx * (qx + (x - 0.25)) < 0.25 * y * y) || \
+	quick_check = (x - 0.25) * (x - 0.25) + y * y;
+	if ((quick_check * (quick_check + (x - 0.25)) < 0.25 * y * y) || \
 	((x + 1) * (x + 1) + y * y < 1 / 16.0))
 		return (fract->max_iterations); //  принадлежит множеству Мандельброта
 	n = 0;

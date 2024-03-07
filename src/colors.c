@@ -14,7 +14,7 @@
 
 int	get_unicorn_color(int iterations, int max_iterations)
 {
-	double	frequency;
+	float	frequency;
 	int		red;
 	int		green;
 	int		blue;
@@ -31,135 +31,154 @@ int	get_unicorn_color(int iterations, int max_iterations)
 	}
 }
 
-int	get_grey_color(int iterations, int max_iterations) //grey
+int	get_neon_color(int iterations, int max_iterations)
 {
-    int color;
+	float	frequency;
+	int red;
+    int green;
+    int blue;
 
-    color = (255 * iterations) / max_iterations;
-    if (iterations == max_iterations)
- 		return (0x000000);
-    return (color << 16) | (color << 8) | color;
+	if (iterations == max_iterations)
+	{
+		return (0x000000);
+	}
+	else
+	{
+		frequency = 0.3;
+		red = (int)((sin(frequency * iterations + 0) * 127) + 128);
+		green = (int)((sin(frequency * iterations + 2) * 127) + 128);
+		blue = (int)((sin(frequency * iterations + 4) * 127) + 128);
+		return ((red << 16) | (green << 8) | blue);
+	}
 }
-
 
 int	get_cosmic_color(int iterations, int max_iterations)
 {
 	int		color;
-	double	t;
+	double	r;
 	int		red;
 	int		green;
 	int		blue;
 
 	color = 0;
-	t = (double)iterations / max_iterations;
+	r = (double)iterations / max_iterations;
 	if (iterations < max_iterations)
 	{
 		// Интерполяция между черным и желтым
-		red = (int)(9 * (1 - t) * t * t * t * 255);
-		green = (int)(15 * (1 - t) * (1 - t) * t * t * 255);
-		blue = (int)(8.5 * (1 - t) * (1 - t) * (1 - t) * t * 255);
+		red = (int)(9 * (1 - r) * r * r * r * 255);
+		green = (int)(15 * (1 - r) * (1 - r) * r * r * 255);
+		blue = (int)(8.5 * (1 - r) * (1 - r) * (1 - r) * r * 255);
 		color = (red << 16) | (green << 8) | blue;
 	}
 	else
 		color = 0x000000;
-	
 	return (color);
 }
 
-
-int get_zebra_color(int iterations, int max_iterations) 
-{	
+int	get_zebra_color(int iterations, int max_iterations)
+{
 	double	value;
 
-    if (iterations == max_iterations)
-        return 0x000000; 
-    value = sin(iterations * 3); // плотность полос (красиво 3 и 0.8)
-    // Если синус положительный, возвращаем белый цвет, иначе - черный
-    if (value > 0)
-        return 0xFFFFFF; 
-    else
-        return 0x000000;
+	if (iterations == max_iterations)
+		return (0x000000);
+	value = sin(iterations * 3); // плотность полос (красиво 3 и 0.8)
+	// Если синус положительный, возвращаем белый цвет, иначе - черный
+	if (value > 0)
+		return (0xFFFFFF);
+	else
+		return (0x000000);
 }
 
+// int	get_fire_color(int iterations, int max_iterations)
+// {
+// 	double	ratio;
+// 	int		red;
+// 	int		blue;
+// 	int		green;
 
-int get_fire_color(int iterations, int max_iterations)
+// 	if (iterations == max_iterations)
+// 		return (0x000000);
+// 	ratio = (double)iterations / max_iterations;
+// 	red = (int)(255 * pow(ratio, 0.3));
+// 	green = (int)(255 * pow(ratio, 0.5));
+// 	blue = (int)(100 * pow(ratio, 0.7));
+// 	if (red > 255)
+// 		red = 255;
+// 	if (blue > 255)
+// 		blue = 255;
+// 	if (green > 255)
+// 		green = 255;
+// 	if (red < 100)
+// 		red = 100;
+// 	if (green < 50)
+// 		green = 50;
+// 	return ((red << 16) | (green << 8) | blue);
+// }
+
+int get_fire_color(int iterations, int max_iterations) 
 {
-    double	ratio;
-	int		red;
-	int		blue;
-	int		green;
-
-	if (iterations == max_iterations)
+    if (iterations == max_iterations) 
         return 0x000000; 
-    ratio = (double)iterations / max_iterations;
 
-    red = (int)(255 * pow(ratio, 0.3));
-    green = (int)(255 * pow(ratio, 0.5));
-    blue = (int)(100 * pow(ratio, 0.7));
+    double ratio = (double)iterations / max_iterations;
+ 
+    int red = (int)(255 * pow(ratio, 0.4));
+    int green = (int)(255 * pow(ratio, 0.6));
+    // Добавляем больше красного и зеленого для усиления "огненного" эффекта
+    int blue = (int)(255 * pow(ratio, 0.8));
 
-    if (red > 255)
-		red = 255; 
-    if (blue > 255)
-		blue = 255;
-	if (green > 255)
-		green = 255;
+    // Убираем синий компонент, чтобы сделать цвета более теплыми
+    blue = fmax(0, fmin(blue - 50, 255));
 
-	if (red < 100)
-		red = 100;
-	if (green < 50)
-		green = 50;
+    red = fmin(red, 255);
+    green = fmin(green, 255);
+
+    // увеличить яркость и контрастность
+    red = fmax(100, red);
+    green = fmax(30, green);
+
     return (red << 16) | (green << 8) | blue;
 }
 
 
-int get_dark_color(int iterations, int max_iterations) //oгонь
+//____________test______________//
+static t_color	get_rgb_components(int color)
 {
-	
-   if (iterations == max_iterations) {
-        return 0x000000; 
-    }
-    
-    const int colors[] = {0x070707, 0xFF4500, 0xFFD700, 0xFFFFF0}; // Черный, Оранжевый, Желтый, Белый
-    double ratio = (double)iterations / max_iterations;
-    int color_index = ratio * (sizeof(colors)/sizeof(colors[0]) - 1);
-    double color_ratio = fmod(ratio * (sizeof(colors)/sizeof(colors[0]) - 1), 1.0);
-    
-    int start_color = colors[color_index];
-    int end_color = colors[color_index + 1];
-    
-    // Разбиение цветов на компоненты
-    int r_start = (start_color >> 16) & 0xFF;
-    int g_start = (start_color >> 8) & 0xFF;
-    int b_start = start_color & 0xFF;
-    
-    int r_end = (end_color >> 16) & 0xFF;
-    int g_end = (end_color >> 8) & 0xFF;
-    int b_end = end_color & 0xFF;
-    
-    // Интерполяция между значениями компонентов начального и конечного цвета
-    int r = r_start + (r_end - r_start) * color_ratio;
-    int g = g_start + (g_end - g_start) * color_ratio;
-    int b = b_start + (b_end - b_start) * color_ratio;
-    
-    return (r << 16) | (g << 8) | b;
+    t_color rgb;
+
+    rgb.r = (color >> 16) & 0xFF;
+	rgb.g = (color >> 8) & 0xFF;
+	rgb.b = color & 0xFF;
+    return (rgb);
 }
-
-
-int get_neon_color(int iterations, int max_iterations)
+static int	interpolate_color(int start_color, int end_color, double ratio)
 {
-	double frequency;
-    int red, green, blue;
+    t_color start;
+    t_color end;
+    t_color result;
 
-    if (iterations == max_iterations) {
-        return 0x000000;
-    } else {
-        frequency = 0.3;
-        red = (int)((sin(frequency * iterations + 0) * 127) + 128);
-        green = (int)((sin(frequency * iterations + 2) * 127) + 128);
-        blue = (int)((sin(frequency * iterations + 4) * 127) + 128); 
-
-        return (red << 16) | (green << 8) | blue;
-    }
+	start = get_rgb_components(start_color);
+	end = get_rgb_components(end_color);
+	result.r = start.r + (int)((end.r - start.r) * ratio);
+	result.g = start.g + (int)((end.g - start.g) * ratio);
+	result.b = start.b + (int)((end.b - start.b) * ratio);
+	return ((result.r << 16) | (result.g << 8) | result.b);
 }
+int	get_dark_color(int iterations, int max_iterations) //огонь
+{
+	int		color_count;
+	double	ratio;
+	int		color_index;
+	double	color_ratio;
 
+	const int colors[] = {0x070707, 0xFF4500, 0xFFD700, 0xFFFFF0}; // Черный, Оранжевый, Желтый, Белый
+	color_count = sizeof(colors) / sizeof(colors[0]);
+	if (iterations == max_iterations)
+		return (0x000000);
+	ratio = (double)iterations / max_iterations;
+	color_index = ratio * (color_count - 1);
+	color_ratio = fmod(ratio * (color_count - 1), 1.0);
+	return (interpolate_color(colors[color_index], colors[color_index + 1],
+			color_ratio));
+}
 

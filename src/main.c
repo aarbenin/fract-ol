@@ -27,7 +27,7 @@ void	set_pixel(t_fractal *fract, int x, int y, int color)
 t_color_func	switch_scheme(int *current_scheme)
 {
 	int				number_of_schemes;
-	t_color_func	color_functions[7];
+	t_color_func	color_functions[6];
 	t_color_func	selected;
 
 	color_functions[0] = get_unicorn_color;
@@ -36,7 +36,6 @@ t_color_func	switch_scheme(int *current_scheme)
 	color_functions[3] = get_zebra_color;
 	color_functions[4] = get_fire_color;
 	color_functions[5] = get_neon_color;
-	color_functions[6] = get_grey_color;
 	number_of_schemes = sizeof(color_functions) / sizeof(color_functions[0]);
 	selected = color_functions[*current_scheme];
 	*current_scheme = (*current_scheme + 1) % number_of_schemes;
@@ -337,7 +336,7 @@ void	parse_arguments(int argc, char **argv, t_fractal *fractal)
 int	main(int argc, char **argv)
 {
 	t_fractal	fractal;
-
+       
 	fractal.mlx = mlx_init();
 	fractal.win = mlx_new_window(fractal.mlx, WIDTH, HEIGHT, "Hello world!");
 	parse_arguments(argc, argv, &fractal);

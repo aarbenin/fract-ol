@@ -107,7 +107,12 @@ typedef struct s_point {
     double  y;      // Координаты в пространстве фрактала
 }               t_point;
 
-
+typedef struct s_rgb_color
+{
+    int r;
+    int g;
+    int b;
+}               t_color;
 # include "mlx.h"
 # include <math.h>
 # include <stdio.h>

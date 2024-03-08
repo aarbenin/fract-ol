@@ -86,10 +86,10 @@ typedef struct s_fractal
     double max_i;
     double min_i;
 
-    double  scale_depth;
+    //double  scale_depth;
 
-    double	scale_x;
-	double	scale_y;
+    //double	scale_x;
+	//double	scale_y;
 
     double  julia_real;
     double  julia_imag;
@@ -133,7 +133,12 @@ int get_grey_color(int iterations, int max_iteerations);
 double ft_atof(const char *str);
 int ft_strcmp(const char *s1, const char *s2);
 
-//_________math_________________//
+//_________utils___________________//
+int	is_valid_float(char *str);
+
+
+t_color_func	switch_scheme(int *current_scheme);
+int	close_window(void *params);
 
 
 //____________sets_______________//
@@ -141,17 +146,27 @@ int	mandelbrot_set(double x, double y, t_fractal *fract);
 int	julia_set(double x, double y, t_fractal *fract);
 int	burning_ship_set(double x, double y, t_fractal *fract);
 
-
+void	draw_fractal(t_fractal *fract, t_color_func color_func);
 
 // //__________inits_________________//
-// void init_mandelbrot(t_fractal *fractal);
-// void init_julia(t_fractal *fractal);
-// void init_burning_ship(t_fractal *fractal);
+void init_mandelbrot(t_fractal *fractal);
+void init_julia(t_fractal *fractal);
+void init_burning_ship(t_fractal *fractal);
+
+void	init_fractal(t_fractal *fractal, char **argv);
 
 //____________parameters_______________//
-// void parse_arguments(int argc, char **argv, t_fractal *fractal);
+ void parse_arguments(int argc, char **argv, t_fractal *fractal);
 // void print_usage(void);
 
 void	zoom(t_fractal *fract, int x, int y, int direction);
 
+//___________events___________________//
+int	handle_mouse(int button, int x, int y, void *param);
+int	handle_keypress(int keycode, t_fractal *fractal);
+
+//_____________msg___________//
+void	print_usage(void);
+void	print_julia_usage(void);
+void	print_julia_default(void);
 #endif

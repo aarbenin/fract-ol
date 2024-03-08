@@ -22,7 +22,6 @@ OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
 LIBFT = $(LIBFT_PATH)/libft.a
 MLX = $(MLX_PATH)/libmlx.a
 
-# Платформо-зависимые флаги
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
     LFLAGS = -L$(MLX_PATH) -lmlx -L/usr/lib -lXext -lX11 -lm -lz
@@ -38,9 +37,9 @@ $(NAME):  $(LIBFT) $(MLX) $(OBJ_FILES)
 	@echo "$(NAME): $(GREEN)object files were created$(RESET)"
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
 
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/*.h
 	@mkdir -p $(OBJ_DIR)
-	@$(CC) $(CFLAGS) -I$(INCLUDE_DIR) -I$(LIBFT_PATH) -I$(MLX_PATH) -c $< -o $@
+	@$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -I $(LIBFT_PATH) -I $(MLX_PATH) -c $< -o $@
 	@echo "$(GREEN)Compiled: $< $(RESET)"
 
 $(LIBFT):

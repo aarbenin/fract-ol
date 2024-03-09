@@ -9,9 +9,33 @@
 /*   Updated: 2024/03/05 12:57:54 by aarbenin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #include "../include/fractol.h"
 
+static int	is_valid_float(char *str)
+{
+	int	i;
+	int	dot_count;
+
+	i = 0;
+	dot_count = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	if (str[i] == '\0')
+		return (0);
+	while (str[i])
+	{
+		if (str[i] == '.')
+		{
+			dot_count++;
+			if (dot_count > 1)
+				return (0);
+		}
+		else if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 static void	handle_julia_params(int argc, char **argv, t_fractal *fractal)
 {

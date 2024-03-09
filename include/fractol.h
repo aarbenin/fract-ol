@@ -9,7 +9,6 @@
 /*   Updated: 2024/03/05 12:59:54 by aarbenin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-
 #ifndef FRACTOL_H
 #define FRACTOL_H
 
@@ -85,26 +84,20 @@ typedef struct s_fractal
     double min_r;
     double max_i;
     double min_i;
-
-    //double  scale_depth;
-
-    //double	scale_x;
-	//double	scale_y;
-
-    double  julia_real;
+	
+	double  julia_real;
     double  julia_imag;
 
     int (*color_func)(int, int);
     int (*fractal_func)(double x, double y, t_fractal *fract);
-
-   
 }   t_fractal;
 
-typedef struct s_point {
+typedef struct s_point
+{
     int     px;
-    int     py;       // Позиции пикселя на экране
+    int     py;
     double  x; 
-    double  y;      // Координаты в пространстве фрактала
+    double  y;
 }               t_point;
 
 typedef struct s_rgb_color
@@ -116,30 +109,23 @@ typedef struct s_rgb_color
 # include "mlx.h"
 # include <math.h>
 # include <stdio.h>
-# include <stdlib.h>
+# include <stdlib.h> //remove!!!
 # include "libft.h"
-
-
 
 int	get_unicorn_color(int iterations, int max_iterations);
 int	get_cosmic_color(int iterations, int max_iterations);
-int get_dark_color(int iterations, int max_iterations);
+int get_sunset_color(int iterations, int max_iterations);
 int get_zebra_color(int iterations, int max_iterations);
 int get_fire_color(int iterations, int max_iterations);
 int get_neon_color(int iterations, int max_iterations);
-int get_grey_color(int iterations, int max_iteerations);
-
-//_________to libft________________//
-double ft_atof(const char *str);
-int ft_strcmp(const char *s1, const char *s2);
-
-//_________utils___________________//
-int	is_valid_float(char *str);
-
 
 t_color_func	switch_scheme(int *current_scheme);
-int	close_window(void *params);
 
+
+//_________utils___________________//
+
+void	clean_all(t_fractal *fractal);
+int		close_window(void *params);
 
 //____________sets_______________//
 int	mandelbrot_set(double x, double y, t_fractal *fract);

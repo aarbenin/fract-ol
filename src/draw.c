@@ -18,7 +18,7 @@ static void	set_pixel(t_fractal *fract, int x, int y, int color)
 
 	if (x >= 0 && x < WIDTH && y >= 0 && y < HEIGHT)
 	{
-		pixel_pos = (y * fract->line_length) + (x << 2); // Эквивалентно (x * 4) для bits_per_pixel = 32
+		pixel_pos = (y * fract->line_length) + (x << 2);
 		pixel_addr = (unsigned int *)(fract->addr + pixel_pos);
 		*pixel_addr = color;
 	}

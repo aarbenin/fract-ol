@@ -23,7 +23,7 @@ void	init_mandelbrot(t_fractal *fractal)
 	fractal->offset_y = 0.0;
 	fractal->max_iterations = 100;
 	fractal->current_scheme = 0;
-	fractal->color_func = &get_neon_color;
+	fractal->color_func = &get_unicorn_color;
 	fractal->fractal_func = &mandelbrot_set;
 }
 
@@ -55,6 +55,6 @@ void	init_burning_ship(t_fractal *fractal)
 	fractal->offset_x = 0.13;
 	fractal->offset_y = -0.035;
 	fractal->max_iterations = 100;
-	fractal->color_func = &get_fire_color;
+	fractal->color_func = &get_sunset_color;
 	fractal->fractal_func = &burning_ship_set;
 }

@@ -11,16 +11,16 @@
 /* ************************************************************************** */
 #include "../include/fractol.h"
 
-static void	handle_movement(t_fractal *fractal, int keycode, double shift_amount)
+static void	handle_movement(t_fractal *fractal, int keycode, double shift)
 {
 	if (keycode == KEY_LEFT)
-		fractal->offset_x -= shift_amount;
+		fractal->offset_x -= shift;
 	else if (keycode == KEY_RIGHT)
-		fractal->offset_x += shift_amount;
+		fractal->offset_x += shift;
 	else if (keycode == KEY_UP)
-		fractal->offset_y -= shift_amount;
+		fractal->offset_y -= shift;
 	else if (keycode == KEY_DOWN)
-		fractal->offset_y += shift_amount;
+		fractal->offset_y += shift;
 }
 
 static void	handle_appearance(t_fractal *fractal, int keycode)
@@ -44,27 +44,26 @@ static void	handle_appearance(t_fractal *fractal, int keycode)
 	}
 }
 
-
 void	handle_julia(t_fractal *fractal, int keycode)
 {
 	if (keycode == KEY_W)
 	{
-		fractal->julia_imag += 0.05;
+		fractal->julia_imag += 0.015;
 		printf("julia_imag: %f\n", fractal->julia_imag);
 	}
 	else if (keycode == KEY_S)
 	{
-		fractal->julia_imag -= 0.05;
+		fractal->julia_imag -= 0.015;
 		printf("julia_imag: %f\n", fractal->julia_imag);
 	}
 	else if (keycode == KEY_A)
 	{
-		fractal->julia_real -= 0.05;
+		fractal->julia_real -= 0.015;
 		printf("julia_real: %f\n", fractal->julia_real);
 	}
 	else if (keycode == KEY_D)
 	{
-		fractal->julia_real += 0.05;
+		fractal->julia_real += 0.015;
 		printf("julia_real: %f\n", fractal->julia_real);
 	}
 }
@@ -85,15 +84,15 @@ int	handle_mouse(int button, int x, int y, void *param)
 
 int	handle_keypress(int keycode, t_fractal *fractal)
 {
-	double	shift_amount;
+	double	shift;
 
-	shift_amount = (fractal->max_r - fractal->min_r) * 0.05;
+	shift = (fractal->max_r - fractal->min_r) * 0.05;
 	if (keycode == KEY_ESC)
 	{
 		mlx_destroy_window(fractal->mlx, fractal->win);
 		exit(0);
 	}
-	handle_movement(fractal, keycode, shift_amount);
+	handle_movement(fractal, keycode, shift);
 	handle_julia(fractal, keycode);
 	handle_appearance(fractal, keycode);
 	mlx_clear_window(fractal->mlx, fractal->win);

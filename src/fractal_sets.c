@@ -24,7 +24,7 @@ int	mandelbrot_set(double x, double y, t_fractal *fract)
 	quick_check = (x - 0.25) * (x - 0.25) + y * y;
 	if ((quick_check * (quick_check + (x - 0.25)) < 0.25 * y * y) || \
 	((x + 1) * (x + 1) + y * y < 1 / 16.0))
-		return (fract->max_iterations); //  принадлежит множеству Мандельброта
+		return (fract->max_iterations);
 	n = 0;
 	while (zx * zx + zy * zy < 4 && n < fract->max_iterations)
 	{
@@ -76,8 +76,8 @@ int	burning_ship_set(double x, double y, t_fractal *fract)
 	while (zx2 + zy2 < 4 && n < fract->max_iterations)
 	{
 		zy = fabs(2 * zx * zy) + y;
-		zx = zx2 - zy2 + x; // Используем предварительно вычисленные квадраты
-		zx2 = zx * zx; // Обновляем квадраты
+		zx = zx2 - zy2 + x;
+		zx2 = zx * zx;
 		zy2 = zy * zy;
 		n++;
 	}

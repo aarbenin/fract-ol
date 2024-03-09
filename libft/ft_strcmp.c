@@ -1,28 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   ft_strcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarbenin <aarbenin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/05 13:06:28 by aarbenin          #+#    #+#             */
-/*   Updated: 2024/03/05 13:06:31 by aarbenin         ###   ########.fr       */
+/*   Created: 2024/03/09 13:04:28 by aarbenin          #+#    #+#             */
+/*   Updated: 2024/03/09 13:04:52 by aarbenin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../include/fractol.h"
-
-int	close_window(void *params)
+int	ft_strcmp(const char *s1, const char *s2)
 {
-	(void)params;
-	exit(0);
-}
-
-void	clean_all(t_fractal *fractal)
-{
-	if (fractal->img)
-		mlx_destroy_image(fractal->mlx, fractal->img);
-	if (fractal->win && fractal->mlx)
-		mlx_destroy_window(fractal->mlx, fractal->win);
-	if (fractal->mlx)
-		free(fractal->mlx);
+	while (*s1 && (*s1 == *s2))
+	{
+		s1++;
+		s2++;
+	}
+	return (*(const unsigned char *)s1 - *(const unsigned char *)s2);
 }

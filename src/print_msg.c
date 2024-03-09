@@ -13,28 +13,38 @@
 
 void	print_usage(void)
 {
-	ft_printf("Usage: ./fractol [fractal]\n");
-	ft_printf("Available fractals:\n");
-	ft_printf("  - mandelbrot\n");
-	ft_printf("  - julia\n");
-	ft_printf("  - ship (for burning ship)\n");
+	ft_putendl_fd("Usage: ./fractol <fractal>", 1);
+	ft_putendl_fd("Available fractals:", 1);
+	ft_putendl_fd("  - mandelbrot", 1);
+	ft_putendl_fd("  - julia", 1);
+	ft_putendl_fd("  - ship (for burning ship)", 1);
 }
 
 void	print_julia_usage(void)
 {
-	ft_printf("\nThe Julia set requires two additional parameters in either of the following formats:\n");
-	ft_printf("	./fractol julia <real_part> <imaginary_part>\n");
-	ft_printf("	./fractol julia \"<real_part>\" \"<imaginary_part>\"\n\n");
-	ft_printf("Examples:\n");
-	ft_printf("	./fractol julia -0.8 0.156\n");
-	ft_printf("	./fractol julia \"-0.8\" \"0.156\"\n\n");
-	ft_printf("For generating the Julia set with default parameters, run ./fractol julia\n\n");
+	ft_putchar_fd('\n', 1);
+	ft_putstr_fd("The Julia set requires two additional parameters ", 1);
+	ft_putendl_fd("in either of the following formats:", 1);
+	ft_putendl_fd("	./fractol julia <real_part> <imaginary_part>", 1);
+	ft_putendl_fd("	./fractol julia \"<real_part>\" \"<imaginary_part>\"", 1);
+	ft_putendl_fd("Examples:", 1);
+	ft_putendl_fd("	./fractol julia -0.8 0.156", 1);
+	ft_putendl_fd("	./fractol julia \"-0.8\" \"0.156\"", 1);
+	ft_putstr_fd("For generating the Julia set with default parameters, ", 1);
+	ft_putendl_fd("run ./fractol julia", 1);
+	ft_putchar_fd('\n', 1);
 }
+
 void	print_julia_default(void)
 {
-	ft_printf("\nA Julia set was generated using default parameters\n");
-	ft_printf("For custom parameters run: ./fractol julia <real_part> <imaginary_part>\n");
-	ft_printf("The recommended range for both parameters is from -2 to 2.\n\n");
-	ft_printf("You can also adjust parameters in real-time using the WASD keys:\n");
-	ft_printf("	W = \"+\", S = \"-\" for imaginary part\n	A = \"+\", D = \"-\" for real part\n");
+	ft_putendl_fd("A Julia set was generated using default parameters", 1);
+	ft_putstr_fd("For custom parameters run: ", 1);
+	ft_putendl_fd("./fractol julia <real_part> <imaginary_part>", 1);
+	ft_putstr_fd("The recommended range for both parameters ", 1);
+	ft_putendl_fd("is from -2 to 2.", 1);
+	ft_putstr_fd("You can also adjust parameters in ", 1);
+	ft_putend_fd("real-time using the WASD keys:", 1);
+	ft_putend_fd("	W = \"+\", S = \"-\" for imaginary part", 1);
+	ft_putend_fd("	A = \"+\", D = \"-\" for real part", 1);
+
 }

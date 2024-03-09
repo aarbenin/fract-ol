@@ -2,8 +2,6 @@ GREEN = \033[0;32m
 RED = \033[0;31m
 RESET = \033[0m
 
-#.SILENT:
-
 NAME = fractol
 
 CC = gcc
@@ -16,8 +14,8 @@ SRC_DIR = src
 OBJ_DIR = obj
 INCLUDE_DIR = include
 
-SRC_FILES = $(wildcard $(SRC_DIR)/*.c)
-OBJ_FILES = $(patsubst $(SRC_DIR)/%.c,$(OBJ_DIR)/%.o,$(SRC_FILES))
+SRC_FILES = $(wildcard $(SRC_DIR)/*.c) $(wildcard $(SRC_DIR)/color_schemes/*.c)
+OBJ_FILES := $(SRC_FILES:$(SRC_DIR)/%.c=$(OBJ_DIR)/%.o)
 
 LIBFT = $(LIBFT_PATH)/libft.a
 MLX = $(MLX_PATH)/libmlx.a
@@ -38,7 +36,7 @@ $(NAME):  $(LIBFT) $(MLX) $(OBJ_FILES)
 	@echo "$(NAME): $(GREEN)$(NAME) was created$(RESET)"
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c $(INCLUDE_DIR)/*.h
-	@mkdir -p $(OBJ_DIR)
+	@mkdir -p $(@D)
 	@$(CC) $(CFLAGS) -I $(INCLUDE_DIR) -I $(LIBFT_PATH) -I $(MLX_PATH) -c $< -o $@
 	@echo "$(GREEN)Compiled: $< $(RESET)"
 

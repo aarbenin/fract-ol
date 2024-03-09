@@ -1,15 +1,15 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   colors2.c                                          :+:      :+:    :+:   */
+/*   get_fire_color.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: aarbenin <aarbenin@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/08 13:35:23 by aarbenin          #+#    #+#             */
-/*   Updated: 2024/03/08 13:35:26 by aarbenin         ###   ########.fr       */
+/*   Created: 2024/03/09 11:48:57 by aarbenin          #+#    #+#             */
+/*   Updated: 2024/03/09 11:49:01 by aarbenin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
-#include "../include/fractol.h"
+#include "../../include/fractol.h"
 
 static t_color	get_rgb_components(int color)
 {
@@ -35,7 +35,7 @@ static int	interpolate_color(int start_color, int end_color, double ratio)
 	return ((result.r << 16) | (result.g << 8) | result.b);
 }
 
-int	get_dark_color(int iterations, int max_iterations) //огонь
+int	get_fire_color(int iterations, int max_iterations) //огонь
 {
 	int		color_count;
 	double	ratio;

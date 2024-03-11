@@ -31,7 +31,7 @@ void	init_julia(t_fractal *fractal)
 {
 	fractal->type = JULIA;
 	fractal->julia_real = -0.8;
-	fractal->julia_imag = -0.2;
+	fractal->julia_imag = -0.185;
 	fractal->min_r = -2.0;
 	fractal->max_r = 2.0;
 	fractal->min_i = -2.0;
@@ -40,7 +40,7 @@ void	init_julia(t_fractal *fractal)
 	fractal->offset_x = 0.0;
 	fractal->offset_y = 0.0;
 	fractal->max_iterations = 300;
-	fractal->color_func = &get_neon_color;
+	fractal->color_func = &get_cosmic_color;
 	fractal->fractal_func = &julia_set;
 }
 

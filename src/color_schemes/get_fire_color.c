@@ -35,7 +35,7 @@ static int	interpolate_color(int start_color, int end_color, double ratio)
 	return ((result.r << 16) | (result.g << 8) | result.b);
 }
 
-int	get_fire_color(int iterations, int max_iterations) //огонь
+int	get_fire_color(int iterations, int max_iterations)
 {
 	int		color_count;
 	double	ratio;

@@ -39,25 +39,29 @@ static int	is_valid_float(char *str)
 
 static void	handle_julia_params(int argc, char **argv, t_fractal *fractal)
 {
-	if (argc < 2)
+	if (argc == 4)
 	{
-		print_usage();
-		exit(1);
-	}
-	if (argc == 4 && is_valid_float(argv[2]) && is_valid_float(argv[3]))
-	{
-		fractal->julia_real = ft_atof(argv[2]);
-		fractal->julia_imag = ft_atof(argv[3]);
+		if (is_valid_float(argv[2]) && is_valid_float(argv[3]))
+		{
+			fractal->julia_real = ft_atof(argv[2]);
+			fractal->julia_imag = ft_atof(argv[3]);
+		}
+		else
+		{
+			ft_putendl_fd("Error: Invalid format for Julia set parameters", 2);
+			ft_putstr_fd("Use only integers ", 2);
+			ft_putendl_fd("or floating-point numbers as parameters", 2);
+			print_julia_usage();
+			exit (EXIT_FAILURE);
+		}
 	}
 	else if (argc == 2)
-	{
 		print_julia_default();
-	}
 	else
 	{
-		ft_printf("Error: invalid parameters\n");
+		ft_putendl_fd("Error: Incorrect number of parameters for Julia set", 2);
 		print_julia_usage();
-		exit (1);
+		exit (EXIT_FAILURE);
 	}
 }
 
@@ -66,22 +70,23 @@ void	parse_arguments(int argc, char **argv, t_fractal *fractal)
 	fractal->type = INVALID;
 	if (argc < 2 || argc > 4)
 	{
+		ft_putendl_fd("Error: Incorrect number of arguments", 2);
 		print_usage();
-		exit (1);
+		exit (EXIT_FAILURE);
 	}
 	init_fractal(fractal, argv);
 	if (fractal->type == JULIA)
 		handle_julia_params(argc, argv, fractal);
 	else if (argc != 2)
 	{
-		ft_printf("Error: Only Julia set accepts additional parameters.\n\n");
+		ft_putendl_fd("Error: Only Julia set accepts additional parameters", 2);
 		print_usage();
-		exit (1);
+		exit (EXIT_FAILURE);
 	}
 	if (fractal->type == INVALID)
 	{
-		ft_printf("Error: '%s' is not a valid fractal name.\n\n", argv[1]);
+		ft_putendl_fd("Error: Invalid fractal name", 2);
 		print_usage();
-		exit (1);
+		exit (EXIT_FAILURE);
 	}
 }

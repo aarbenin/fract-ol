@@ -49,22 +49,22 @@ void	handle_julia(t_fractal *fractal, int keycode)
 	if (keycode == KEY_W)
 	{
 		fractal->julia_imag += 0.015;
-		printf("julia_imag: %f\n", fractal->julia_imag);
+		print_julia_fields("julia_imag", fractal->julia_imag);
 	}
 	else if (keycode == KEY_S)
 	{
 		fractal->julia_imag -= 0.015;
-		printf("julia_imag: %f\n", fractal->julia_imag);
+		print_julia_fields("julia_imag", fractal->julia_imag);
 	}
 	else if (keycode == KEY_A)
 	{
 		fractal->julia_real -= 0.015;
-		printf("julia_real: %f\n", fractal->julia_real);
+		print_julia_fields("julia_real", fractal->julia_real);
 	}
 	else if (keycode == KEY_D)
 	{
 		fractal->julia_real += 0.015;
-		printf("julia_real: %f\n", fractal->julia_real);
+		print_julia_fields("julia_real", fractal->julia_real);
 	}
 }
 

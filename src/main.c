@@ -57,7 +57,7 @@ int	main(int argc, char **argv)
 	ft_memset(&fractal, 0, sizeof(t_fractal));
 	if (init_mlx(&fractal))
 		parse_arguments(argc, argv, &fractal);
-	mlx_hook(fractal.win, 17, 0, close_window, NULL);
+	mlx_hook(fractal.win, 17, 0, close_window, &fractal);
 	mlx_hook(fractal.win, 2, 1L << 0, handle_keypress, &fractal);
 	mlx_hook(fractal.win, 4, 1L << 2, handle_mouse, &fractal);
 	draw_fractal(&fractal, fractal.color_func);

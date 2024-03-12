@@ -11,9 +11,9 @@
 /* ************************************************************************** */
 #include "../include/fractol.h"
 
-int	close_window(void *params)
+int	close_window(t_fractal *fractal)
 {
-	(void)params;
+	clean_mlx(fractal);
 	exit(0);
 }
 

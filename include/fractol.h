@@ -36,7 +36,7 @@
 # define MOUSE_RIGHT_BTN 1
 # define MOUSE_LEFT_BTN 2
 
-// event codes
+// Event codes
 # define EVENT_CLOSE_BTN 17
 
 # include "mlx.h"
@@ -114,35 +114,34 @@ int				get_neon_color(int iterations, int max_iterations);
 
 t_color_func	switch_scheme(int *current_scheme);
 
-//_________utils___________________//
-int				close_window(void *params);
+// ========================= Utils =========================
 void			clean_mlx(t_fractal *fractal);
 void			print_float(float f);
+int				close_window(t_fractal *fractal);
 
-//____________sets_______________//
+// ========================= Fractal Sets =========================
 int				mandelbrot_set(double x, double y, t_fractal *fract);
 int				julia_set(double x, double y, t_fractal *fract);
 int				burning_ship_set(double x, double y, t_fractal *fract);
 
 void			draw_fractal(t_fractal *fract, t_color_func color_func);
 
-//__________inits_________________//
+// ========================= Initializations =========================
 void			init_mandelbrot(t_fractal *fractal);
 void			init_julia(t_fractal *fractal);
 void			init_burning_ship(t_fractal *fractal);
 
 void			init_fractal(t_fractal *fractal, char **argv);
 
-//____________parameters_______________//
+// ========================= Parameters =========================
 void			parse_arguments(int argc, char **argv, t_fractal *fractal);
 
-void			zoom(t_fractal *fract, int x, int y, int direction);
-
-//___________events___________________//
+// ========================= Events =========================
 int				handle_mouse(int button, int x, int y, void *param);
 int				handle_keypress(int keycode, t_fractal *fractal);
+void			zoom(t_fractal *fract, int x, int y, int direction);
 
-//_____________msg___________//
+// ========================= Messages =========================
 void			print_usage(void);
 void			print_julia_usage(void);
 void			print_julia_default(void);

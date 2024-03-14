@@ -89,7 +89,7 @@ int	handle_keypress(int keycode, t_fractal *fractal)
 	shift = (fractal->max_r - fractal->min_r) * 0.05;
 	if (keycode == KEY_ESC)
 	{
-		mlx_destroy_window(fractal->mlx, fractal->win);
+		clean_mlx(fractal);
 		exit(0);
 	}
 	handle_movement(fractal, keycode, shift);

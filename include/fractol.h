@@ -105,6 +105,7 @@ typedef struct s_rgb_color
 	int			b;
 }				t_color;
 
+// ========================= Color schemes =========================
 int				get_unicorn_color(int iterations, int max_iterations);
 int				get_cosmic_color(int iterations, int max_iterations);
 int				get_sunset_color(int iterations, int max_iterations);
@@ -119,18 +120,16 @@ void			clean_mlx(t_fractal *fractal);
 void			print_float(float f);
 int				close_window(t_fractal *fractal);
 
-// ========================= Fractal Sets =========================
+// ========================= Fractals =========================
 int				mandelbrot_set(double x, double y, t_fractal *fract);
 int				julia_set(double x, double y, t_fractal *fract);
 int				burning_ship_set(double x, double y, t_fractal *fract);
-
 void			draw_fractal(t_fractal *fract, t_color_func color_func);
 
 // ========================= Initializations =========================
 void			init_mandelbrot(t_fractal *fractal);
 void			init_julia(t_fractal *fractal);
 void			init_burning_ship(t_fractal *fractal);
-
 void			init_fractal(t_fractal *fractal, char **argv);
 
 // ========================= Parameters =========================

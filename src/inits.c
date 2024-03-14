@@ -11,6 +11,17 @@
 /* ************************************************************************** */
 #include "../include/fractol.h"
 
+static void	adjust_view(t_fractal *fractal)
+{
+	double	range_i;
+	double	center_i;
+
+	range_i = (fractal->max_r - fractal->min_r) * HEIGHT / WIDTH;
+	center_i = (fractal->max_i + fractal->min_i) / 2;
+	fractal->min_i = center_i - range_i / 2;
+	fractal->max_i = center_i + range_i / 2;
+}
+
 void	init_mandelbrot(t_fractal *fractal)
 {
 	fractal->type = MANDELBROT;
@@ -25,6 +36,7 @@ void	init_mandelbrot(t_fractal *fractal)
 	fractal->current_scheme = 0;
 	fractal->color_func = &get_unicorn_color;
 	fractal->fractal_func = &mandelbrot_set;
+	adjust_view(fractal);
 }
 
 void	init_julia(t_fractal *fractal)
@@ -42,6 +54,7 @@ void	init_julia(t_fractal *fractal)
 	fractal->max_iterations = 300;
 	fractal->color_func = &get_cosmic_color;
 	fractal->fractal_func = &julia_set;
+	adjust_view(fractal);
 }
 
 void	init_burning_ship(t_fractal *fractal)
@@ -57,4 +70,5 @@ void	init_burning_ship(t_fractal *fractal)
 	fractal->max_iterations = 100;
 	fractal->color_func = &get_sunset_color;
 	fractal->fractal_func = &burning_ship_set;
+	adjust_view(fractal);
 }

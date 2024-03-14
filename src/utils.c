@@ -19,7 +19,9 @@ int	close_window(t_fractal *fractal)
 
 void	clean_mlx(t_fractal *fractal)
 {
-	if (fractal->img)
+	if (!fractal)
+		return ;
+	if (fractal->img && fractal->mlx)
 		mlx_destroy_image(fractal->mlx, fractal->img);
 	if (fractal->win && fractal->mlx)
 		mlx_destroy_window(fractal->mlx, fractal->win);
